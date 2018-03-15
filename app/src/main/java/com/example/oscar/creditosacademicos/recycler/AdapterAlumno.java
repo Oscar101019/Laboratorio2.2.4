@@ -60,8 +60,7 @@ public class AdapterAlumno extends RecyclerView.Adapter<AdapterAlumno.ListaViewH
         holder.btnAñadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), Add_Actividades.class);
-                context.startActivity(intent);
+
 
 
 
@@ -75,10 +74,23 @@ public class AdapterAlumno extends RecyclerView.Adapter<AdapterAlumno.ListaViewH
 
             @Override
             public void onClick(View view) {
-                Intent intent2 = new Intent(view.getContext(), View_Details.class);
-                context.startActivity(intent2);
+                final int id = item.getId();
+
+                final ConexionSQLiteHelper functions = new ConexionSQLiteHelper(context);
+                final Alumno items = functions.getSingleItemAlumno(id);
 
 
+                Intent ListSong = new Intent(context.getApplicationContext(), View_Details.class);
+                ListSong.putExtra("id", items.getId());
+                ListSong.putExtra("nombre", items.getNombre());
+                ListSong.putExtra("NumControl", items.getNoctrl());
+                ListSong.putExtra("telefono", items.getCel());
+                ListSong.putExtra("carrera", items.getCarrera());
+                ListSong.putExtra("correo", items.getEmail());
+
+
+
+                context.startActivity(ListSong);
 
 
 

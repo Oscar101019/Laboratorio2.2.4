@@ -27,7 +27,7 @@ public class Utilidades {
     public static String ACAL_ACTIVIDAD="nombre";
 
     public static String CREAR_ALUMNO="CREATE TABLE "+TABLA_ALUMNO+"("+
-            ID_AL +" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+            ID_AL +" INTEGER PRIMARY KEY, "+
             NOMBRE_AL+" TEXT, " +
             NOCTRL_AL+" TEXT , "+
             EMAIL_AL+" TEXT , "+
@@ -35,7 +35,7 @@ public class Utilidades {
             CARRERA_AL+" TEXT)";
 
     public static String CREAR_ACTIVIDAD="CREATE TABLE "+TABLA_ACTIVIDAD+"("+
-            ID_AC +" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+            ID_AC +" INTEGER PRIMARY KEY , "+
             NOMBRE_ACT+" TEXT, "+
             CREDITOS_ACT+" TEXT)";
 

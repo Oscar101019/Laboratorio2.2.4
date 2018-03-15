@@ -11,6 +11,7 @@ import com.example.oscar.creditosacademicos.entidades.Actividad;
 import com.example.oscar.creditosacademicos.entidades.Alumno;
 import com.example.oscar.creditosacademicos.utilidades.Utilidades;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -93,6 +94,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()){
             do {
                 Alumno item = new Alumno();
+                item.setId(cursor.getInt(0));
                 item.setNombre(cursor.getString(1));
                 item.setNoctrl(cursor.getString(2));
                 item.setEmail(cursor.getString(3));
@@ -145,6 +147,8 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
 
         Alumno item = new Alumno();
+        assert cursor != null;
+        item.setId(cursor.getInt(0));
         item.setNombre(cursor.getString(1));
         item.setNoctrl(cursor.getString(2));
         item.setEmail(cursor.getString(3));
@@ -154,6 +158,33 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return item;
+    }
+
+    public ArrayList<Alumno> getAlumnoEspecifico(int id){
+        ArrayList<Alumno> lista= new ArrayList<Alumno>();
+        SQLiteDatabase database = getReadableDatabase();
+
+        String sql = "SELECT * FROM " + Utilidades.TABLA_ALUMNO+ " WHERE " + Utilidades.ID_AL +"=?";
+        Cursor cursor = database.rawQuery(sql,new String[]{String.valueOf(id)});
+
+        if (cursor.moveToFirst()){
+            do {
+                Alumno item=new Alumno();
+                item.setNombre(cursor.getString(1));
+                item.setNoctrl(cursor.getString(2));
+                item.setEmail(cursor.getString(3));
+                item.setCel(cursor.getString(4));
+                item.setCarrera(cursor.getString(5));
+
+                lista.add(item);
+            }while (cursor.moveToNext());
+        }
+
+
+
+        cursor.close();
+        database.close();
+        return lista;
     }
 
     public Actividad getSingleItemActividad(int id){
@@ -176,6 +207,8 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         return item;
     }
 
+
+
     public void UpdateActividad(Actividad item){
         SQLiteDatabase database = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -183,6 +216,19 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         contentValues.put(Utilidades.NOMBRE_ACT,item.getActividad());
         contentValues.put(Utilidades.CREDITOS_ACT,item.getCreditos());
         database.update(Utilidades.TABLA_ACTIVIDAD,contentValues, Utilidades.ID_AC + "=?",new String[]{String.valueOf(item.getId())});
+
+    }
+
+    public void UpdateAlumno(Alumno item){
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(Utilidades.NOMBRE_AL,item.getNombre());
+        contentValues.put(Utilidades.NOCTRL_AL,item.getNoctrl());
+        contentValues.put(Utilidades.CARRERA_AL,item.getCarrera());
+        contentValues.put(Utilidades.CEL_AL,item.getCel());
+        contentValues.put(Utilidades.EMAIL_AL,item.getEmail());
+        database.update(Utilidades.TABLA_ALUMNO,contentValues, Utilidades.ID_AL + "=?",new String[]{String.valueOf(item.getId())});
 
     }
 

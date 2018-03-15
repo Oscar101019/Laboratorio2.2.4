@@ -262,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (data.size()>0){
             for (int i = 0; i<data.size(); i++){
+                int id =data.get(i).getId();
                 String nombreAlumno = data.get(i).getNombre();
                 String noControl= data.get(i).getNoctrl();
                 String email= data.get(i).getEmail();
@@ -270,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Alumno item = new Alumno();
 
+                item.setId(id);
                 item.setNombre(nombreAlumno);
                 item.setNoctrl(noControl);
                 item.setEmail(email);
