@@ -22,9 +22,14 @@ public class Utilidades {
     public static String CREDITOS_ACT="creditos";
 
     public static String ACAL="acal";
-    public static String ID_ACAL="_id";
-    public static String ACAL_NOCONTROL="noctrl";
+    public static String ACAL_ID_AL="_idAl";
+    public static String ACAL_ID_AC="_idAc";
     public static String ACAL_ACTIVIDAD="nombre";
+    public static String ACAL_FECHA_INICIO="fechai";
+    public static String ACAL_FECHA_FIN="fechaf";
+    public static String ACAL_CREDITOS="creditos";
+
+
 
     public static String CREAR_ALUMNO="CREATE TABLE "+TABLA_ALUMNO+"("+
             ID_AL +" INTEGER PRIMARY KEY, "+
@@ -40,9 +45,12 @@ public class Utilidades {
             CREDITOS_ACT+" TEXT)";
 
     public static String CREAR_ACAL="CREATE TABLE "+ACAL+"("+
-            ID_ACAL +" INTEGER PRIMARY KEY AUTOINCREMENT, "+
-            ACAL_NOCONTROL+" TEXT, "+
-            ACAL_ACTIVIDAD+" TEXT )";
+            ACAL_ID_AL +" INTEGER , "+
+            ACAL_ID_AC +" INTEGER , "+
+            ACAL_ACTIVIDAD+" TEXT   , "+
+            ACAL_FECHA_INICIO+" TEXT , "+
+            ACAL_FECHA_FIN+" TEXT , "+
+            ACAL_CREDITOS+" INTEGER )";
 
 
 

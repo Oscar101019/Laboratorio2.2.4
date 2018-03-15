@@ -16,15 +16,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.oscar.creditosacademicos.entidades.Alumno;
+import com.example.oscar.creditosacademicos.entidades.Item;
 import com.example.oscar.creditosacademicos.recycler.AdapterAlumno;
+import com.example.oscar.creditosacademicos.recycler.AdapterItem;
 
 import java.util.ArrayList;
 
 public class View_Details extends AppCompatActivity {
 
     RecyclerView recycler;
-    ArrayList<Alumno> ListaAlumnos = new ArrayList<Alumno>();
-    AdapterAlumno adapterAlumno;
+    ArrayList<Item> ListaItems = new ArrayList<Item>();
+    AdapterItem adapterItem;
     TextView txtFechaInicio,txtFechaFin;
     ImageButton ImgButtonEditar,ImgButtonCan;
     private AlertDialog dialog;
@@ -39,17 +41,18 @@ public class View_Details extends AppCompatActivity {
         final TextView cel= (TextView)findViewById(R.id.txtCel);
         final TextView correo= (TextView)findViewById(R.id.txtCorreo);
         final TextView carrera= (TextView)findViewById(R.id.txtCarrera);
+        final TextView creditosTotales = (TextView)findViewById(R.id.creditosTotales);
         ImgButtonEditar = (ImageButton)findViewById(R.id.btnEditar);
         ImgButtonCan = (ImageButton)findViewById(R.id.btnCerrar);
 
         final Bundle datos = this.getIntent().getExtras();
-        //listarDatosAlumno(datos.getInt("id"));
+        listarDatosAlumno(datos.getInt("id"));
         nombre.setText(""+datos.getString("nombre"));
         numControl.setText(""+datos.getString("NumControl"));
         cel.setText(""+datos.getString("telefono"));
         carrera.setText(""+datos.getString("carrera"));
         correo.setText(""+datos.getString("correo"));
-        //ac.setText("Total Creditos: "+creditos(datos.getInt("nc")));
+        creditosTotales.setText("Total Creditos: "+creditos(datos.getInt("id")));
 
 
         ImgButtonEditar.setOnClickListener(new View.OnClickListener() {
@@ -141,46 +144,60 @@ public class View_Details extends AppCompatActivity {
     }
 
     private void listarDatosAlumno( int idAl) {
-        recycler = (RecyclerView) findViewById(R.id.recycler);
-        adapterAlumno= new AdapterAlumno(this,ListaAlumnos);
+        recycler = (RecyclerView) findViewById(R.id.recyclerActividades);
+        adapterItem= new AdapterItem(this,ListaItems);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(View_Details.this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycler.setLayoutManager(layoutManager);
-        recycler.setAdapter(adapterAlumno);
+        recycler.setAdapter(adapterItem);
 
-        ListaAlumnos.clear();
+        ListaItems.clear();
 
         ConexionSQLiteHelper functions = new ConexionSQLiteHelper(View_Details.this);
 
-        ArrayList<Alumno> data = functions.getAlumnoEspecifico(idAl);
+        ArrayList<Item> data = functions.getAlumnoEspecifico(idAl);
 
         int cre=0;
         if (data.size()>0){
             for (int i = 0; i<data.size(); i++){
 
-                int id=data.get(i).getId();
-                String nombreAlumno = data.get(i).getNombre();
-                String noControl= data.get(i).getNoctrl();
-                String email= data.get(i).getEmail();
-                String cel=data.get(i).getCel();
-                String carrera=data.get(i).getCarrera();
+                int id=data.get(i).getIdAl();
+                int idAct=data.get(i).getIdAct();
+                String nombreActividad = data.get(i).getActividad();
+                String fechaInicio= data.get(i).getFechaIni();
+                String fechaFin= data.get(i).getFechaFin();
+                int creditos=data.get(i).getCreditos();
 
-                Alumno item = new Alumno();
+                Item item = new Item();
 
-                item.setId(id);
-                item.setNombre(nombreAlumno);
-                item.setNoctrl(noControl);
-                item.setEmail(email);
-                item.setCel(cel);
-                item.setCarrera(carrera);
-                ListaAlumnos.add(item);
+                item.setIdAl(id);
+                item.setIdAct(idAct);
+                item.setActividad(nombreActividad);
+                item.setFechaIni(fechaInicio);
+                item.setFechaFin(fechaFin);
+                item.setCreditos(creditos);
+                ListaItems.add(item);
 
-            }adapterAlumno.notifyDataSetChanged();
+            }adapterItem.notifyDataSetChanged();
 
         }else {
             Toast.makeText(View_Details.this, "No se encontraron registros", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public int creditos(int idc) {
+        ConexionSQLiteHelper functions = new ConexionSQLiteHelper(View_Details.this);
+
+        ArrayList<Item> data = functions.getAlumnoEspecifico(idc);
+        int cre=0;
+        if (data.size()>0) {
+            for (int i = 0; i < data.size(); i++) {
+                int cree = data.get(i).getCreditos();
+                cre += cree;
+            }
+        }
+        return cre;
     }
 
 }

@@ -5,10 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.ArrayAdapter;
 
 
 import com.example.oscar.creditosacademicos.entidades.Actividad;
 import com.example.oscar.creditosacademicos.entidades.Alumno;
+import com.example.oscar.creditosacademicos.entidades.Item;
+import com.example.oscar.creditosacademicos.entidades.Spinner;
 import com.example.oscar.creditosacademicos.utilidades.Utilidades;
 
 import java.lang.reflect.Array;
@@ -87,7 +90,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         ArrayList<Alumno> lista = new ArrayList<Alumno>();
         SQLiteDatabase database = getReadableDatabase();
 
-        String sql = "SELECT * FROM " + Utilidades.TABLA_ALUMNO;
+        String sql = "SELECT * FROM " + Utilidades.TABLA_ALUMNO+ " ORDER BY "+Utilidades.NOCTRL_AL;
 
         Cursor cursor = database.rawQuery(sql,null);
 
@@ -115,7 +118,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         ArrayList<Actividad> lista = new ArrayList<>();
         SQLiteDatabase database = getReadableDatabase();
 
-        String sql = "SELECT * FROM " + Utilidades.TABLA_ACTIVIDAD;
+        String sql = "SELECT * FROM " + Utilidades.TABLA_ACTIVIDAD+ " ORDER BY "+Utilidades.NOMBRE_ACT;
 
         Cursor cursor = database.rawQuery(sql,null);
 
@@ -160,21 +163,22 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         return item;
     }
 
-    public ArrayList<Alumno> getAlumnoEspecifico(int id){
-        ArrayList<Alumno> lista= new ArrayList<Alumno>();
+    public ArrayList<Item> getAlumnoEspecifico(int id){
+        ArrayList<Item> lista= new ArrayList<Item>();
         SQLiteDatabase database = getReadableDatabase();
 
-        String sql = "SELECT * FROM " + Utilidades.TABLA_ALUMNO+ " WHERE " + Utilidades.ID_AL +"=?";
+        String sql = "SELECT * FROM " + Utilidades.ACAL+ " WHERE " + Utilidades.ACAL_ID_AL +"=? ORDER BY "+Utilidades.ACAL_FECHA_INICIO;
         Cursor cursor = database.rawQuery(sql,new String[]{String.valueOf(id)});
 
         if (cursor.moveToFirst()){
             do {
-                Alumno item=new Alumno();
-                item.setNombre(cursor.getString(1));
-                item.setNoctrl(cursor.getString(2));
-                item.setEmail(cursor.getString(3));
-                item.setCel(cursor.getString(4));
-                item.setCarrera(cursor.getString(5));
+                Item item=new Item();
+                item.setIdAl(cursor.getInt(0));
+                item.setIdAct(cursor.getInt(1));
+                item.setActividad(cursor.getString(2));
+                item.setFechaIni(cursor.getString(3));
+                item.setFechaFin(cursor.getString(4));
+                item.setCreditos(cursor.getInt(5));
 
                 lista.add(item);
             }while (cursor.moveToNext());
@@ -230,6 +234,62 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         contentValues.put(Utilidades.EMAIL_AL,item.getEmail());
         database.update(Utilidades.TABLA_ALUMNO,contentValues, Utilidades.ID_AL + "=?",new String[]{String.valueOf(item.getId())});
 
+    }
+
+    public ArrayAdapter<Spinner> llenarSpinner(Context cont){
+
+        ArrayList<Actividad> list = new ArrayList<>();
+        ArrayList<Spinner> list2 = new ArrayList<>();
+
+        SQLiteDatabase database = getReadableDatabase();
+
+        String sql = "SELECT * FROM " + Utilidades.TABLA_ACTIVIDAD +" ORDER BY "+Utilidades.ID_AC+" ASC";
+
+        Cursor cursor = database.rawQuery(sql,null);
+
+        if (cursor.moveToFirst()){
+            do {
+                Actividad item = new Actividad();
+                Spinner item2 =new Spinner();
+                item.setId(Integer.parseInt(cursor.getString(0)));
+                item.setActividad(cursor.getString(1));
+                list.add(item);
+
+                item2.setId(Integer.parseInt(cursor.getString(0)));
+                item2.setNombre(cursor.getString(1));
+                list2.add(item2);
+
+            }while (cursor.moveToNext());
+        }
+
+
+
+
+
+        ArrayAdapter<Spinner> adapter =
+                new ArrayAdapter<Spinner>(cont, R.layout.spinner_layaout_ejemplo,list2);
+        adapter.setDropDownViewResource(R.layout.spinner_layaout_ejemplo);
+
+        cursor.close();
+        database.close();
+
+        return adapter;
+    }
+
+    public void InsertTabla(Item item){
+
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+
+        contentValues.put(Utilidades.ACAL_ID_AL,item.getIdAl());
+        contentValues.put(Utilidades.ACAL_ID_AC,item.getIdAct());
+        contentValues.put(Utilidades.ACAL_CREDITOS,item.getCreditos());
+        contentValues.put(Utilidades.ACAL_ACTIVIDAD,item.getActividad());
+        contentValues.put(Utilidades.ACAL_FECHA_FIN,item.getFechaFin());
+        contentValues.put(Utilidades.ACAL_FECHA_INICIO,item.getFechaIni());
+
+        database.insert(Utilidades.ACAL,null,contentValues);
     }
 
 }

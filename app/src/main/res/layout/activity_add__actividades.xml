@@ -32,7 +32,7 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/txt_fecha_ini"
+        android:id="@+id/txt_fechaIni"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/txt_creditos"
+        android:id="@+id/txt_fechaFin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
