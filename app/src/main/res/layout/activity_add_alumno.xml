@@ -32,7 +32,8 @@
     <EditText
         android:id="@+id/txt_numero_ctrl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="number" />
 
     <TextView
         android:id="@+id/carrera"
@@ -62,7 +63,8 @@
     <EditText
         android:id="@+id/txt_numero_celular"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="number" />
 
     <TextView
         android:id="@+id/Correo"

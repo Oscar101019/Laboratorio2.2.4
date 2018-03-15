@@ -52,11 +52,8 @@ public class AdapterAlumno extends RecyclerView.Adapter<AdapterAlumno.ListaViewH
         final Alumno item=listadatos.get(position);
 
         holder.txtNombre.setText(item.getNombre());
-        //holder.Creditos.setText(con.lisarCreditos("14400925"));
         holder.NoCtrl.setText(item.getNoctrl());
-        //holder.Email.setText(item.getEmail());
-        //holder.Cel.setText(item.getCel());
-        //holder.Carrera.setText(item.getCarrera());
+        holder.Carrera.setText(item.getCarrera());
 
         holder.btnAñadir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,10 +174,7 @@ public class AdapterAlumno extends RecyclerView.Adapter<AdapterAlumno.ListaViewH
 
             txtNombre=itemView.findViewById(R.id.txtNombre);
             NoCtrl=itemView.findViewById(R.id.txtNoCtrl);
-            Email=itemView.findViewById(R.id.txtEmail);
-            Cel=itemView.findViewById(R.id.txtCel);
             Carrera=itemView.findViewById(R.id.txtCarrera);
-            Creditos=itemView.findViewById(R.id.txtCreditos);
             btnAñadir=itemView.findViewById(R.id.imageButtonAñadir);
             btnView=itemView.findViewById(R.id.imageButtonVer);
         }

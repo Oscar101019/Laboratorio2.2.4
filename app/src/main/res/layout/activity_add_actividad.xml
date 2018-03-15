@@ -17,7 +17,8 @@
     <EditText
         android:id="@+id/txt_idActividad"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="number" />
 
 
 
@@ -50,7 +51,8 @@
     <EditText
         android:id="@+id/txt_creditos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="number" />
 
 
     <LinearLayout
